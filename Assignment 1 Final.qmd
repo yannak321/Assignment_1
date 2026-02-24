@@ -1,0 +1,102 @@
+---
+title: "Assignment_1_Fin"
+author: "Yanna Kachafanas"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)#loading necessary packages
+```
+
+```{r}
+avengers_clean <-na.omit(avengers_1_) #exclude incomplete cases
+
+avengers_variable <- mutate(avengers_clean,CombatEffectiveness = agility+speed +willpower+strength)
+#creating a new variable 'Combat Effectiveness'
+```
+
+```{r}
+filter(avengers_variable,superpower == "no",died == "yes")
+avengers_filter <-filter(avengers_variable,superpower == "no",died == "yes") #filtering dataset to include only avengers who have died and who have no superpowers
+
+write_csv(avengers_filter, "avengers_main.csv") #creating a new dataset in CSV format
+
+?summarize
+summary_overall<- avengers_main %>%
+  summarise(mean(kills,na.rm =TRUE),
+            sd(kills,na.rm =TRUE),
+            range(kills,na.rm=TRUE),
+            mean(CombatEffectiveness,na..rm=TRUE),
+            sd(CombatEffectiveness,na.rm=TRUE),
+            range(CombatEffectiveness, na.rm=TRUE),
+            mean(injuries,na.rm=TRUE),
+            sd(injuries,na.rm=TRUE),
+            range(injuries,na.rm=TRUE))
+view(summary)
+#Summarizing dataset to see properties of combateffectivenss, injuries, and kills OVERALL
+
+avengers_main_north <-filter(avengers_main, north_south == "north")
+
+```
+
+```{r}
+summary_north<- avengers_main_north %>%
+  summarise(mean(kills,na.rm =TRUE),
+            sd(kills,na.rm =TRUE),
+            range(kills,na.rm=TRUE),
+            mean(CombatEffectiveness,na..rm=TRUE),
+            sd(CombatEffectiveness,na.rm=TRUE),
+            range(CombatEffectiveness, na.rm=TRUE),
+            mean(injuries,na.rm=TRUE),
+            sd(injuries,na.rm=TRUE),
+            range(injuries,na.rm=TRUE))
+#summary based on northern battlefield location
+```
+
+```{r}
+avengers_main_south <-filter(avengers_main, north_south == "south")
+
+summary_south<- avengers_main_south %>%
+  summarise(mean(kills,na.rm =TRUE),
+            sd(kills,na.rm =TRUE),
+            range(kills,na.rm=TRUE),
+            mean(CombatEffectiveness,na..rm=TRUE),
+            sd(CombatEffectiveness,na.rm=TRUE),
+            range(CombatEffectiveness, na.rm=TRUE),
+            mean(injuries,na.rm=TRUE),
+            sd(injuries,na.rm=TRUE),
+            range(injuries,na.rm=TRUE))
+#summary based on southern battlefield location
+```
+
+```{r}
+library(pwr) 
+?pwr.t.test
+pwr.t.test(d =.5,sig.level=.05,power=.8)
+type =c("two-sample")
+alternative = c("one-sided") #power analysis to determine required sample size 
+```
+
+```{r}
+library(TOSTER)
+?powerTOSTtwo
+
+powerTOSTtwo(alpha=0.05, N=63.77, low_eqbound_d=-0.5, high_eqbound_d=0.5)#calculating estimated power requiredfor zero effect
+```
+
+```{r}
+install.packages("effectsize")
+library(effectsize)
+library(metafor)
+
+```
+
+```{r}
+stats <- escalc(measure = "SMD", 
+                ti = 4.25,
+                n1i = 63.77,
+                n2i = 63.77,
+                var.names = c("dp","variance"))
+summary(stats) #calculating effect size and confidence interval
+```
