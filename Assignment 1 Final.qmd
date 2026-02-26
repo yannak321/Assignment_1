@@ -73,16 +73,16 @@ summary_south<- avengers_main_south %>%
 ```{r}
 library(pwr) 
 ?pwr.t.test
-pwr.t.test(d =.5,sig.level=.05,power=.8)
-type =c("two-sample")
-alternative = c("one-sided") #power analysis to determine required sample size 
+pwr.t.test(d =.5,sig.level=.05,power=.8,
+type ="two.sample",
+alternative ="greater") #power analysis to determine required sample size 
 ```
 
 ```{r}
 library(TOSTER)
 ?powerTOSTtwo
 
-powerTOSTtwo(alpha=0.05, N=63.77, low_eqbound_d=-0.5, high_eqbound_d=0.5)#calculating estimated power requiredfor zero effect
+powerTOSTtwo(alpha=0.05, N=50.15, low_eqbound_d=-0.5, high_eqbound_d=0.5)#calculating estimated power requiredfor zero effect
 ```
 
 ```{r}
@@ -95,8 +95,8 @@ library(metafor)
 ```{r}
 stats <- escalc(measure = "SMD", 
                 ti = 4.25,
-                n1i = 63.77,
-                n2i = 63.77,
+                n1i = 50.15,
+                n2i = 50.15,
                 var.names = c("dp","variance"))
 summary(stats) #calculating effect size and confidence interval
 ```
