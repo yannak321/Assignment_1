@@ -6,6 +6,7 @@ editor: visual
 ---
 
 ```{r}
+#install.packages("tidyverse")
 library(tidyverse)#loading necessary packages
 ```
 
@@ -21,6 +22,9 @@ filter(avengers_variable,superpower == "no",died == "yes")
 avengers_filter <-filter(avengers_variable,superpower == "no",died == "yes") #filtering dataset to include only avengers who have died and who have no superpowers
 
 write_csv(avengers_filter, "avengers_main.csv") #creating a new dataset in CSV format
+#install.packages("haven")
+library(haven)
+write_sav(avengers_filter, "avengers_main.sav")  #creating a new dataset in sav format
 
 ?summarize
 summary_overall<- avengers_main %>%
@@ -71,6 +75,7 @@ summary_south<- avengers_main_south %>%
 ```
 
 ```{r}
+#install.packages("pwr")
 library(pwr) 
 ?pwr.t.test
 pwr.t.test(d =.5,sig.level=.05,power=.8,
@@ -79,6 +84,7 @@ alternative ="greater") #power analysis to determine required sample size
 ```
 
 ```{r}
+#install.packages("TOSTER")
 library(TOSTER)
 ?powerTOSTtwo
 
@@ -86,8 +92,9 @@ powerTOSTtwo(alpha=0.05, N=50.15, low_eqbound_d=-0.5, high_eqbound_d=0.5)#calcul
 ```
 
 ```{r}
-install.packages("effectsize")
+#install.packages("effectsize")
 library(effectsize)
+#install.packages("metafor")
 library(metafor)
 
 ```
